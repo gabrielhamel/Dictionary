@@ -26,6 +26,10 @@ class Node {
         Node &findOrInsertChild(T data);
         void dump(std::function<std::string(T)> toStringMethod, size_t deep = 0) const;
 
+    private:
+        bool searchBySubstitution(std::list<T> &slice, size_t maxErrors);
+        bool searchByRemovedChar(std::list<T> &slice, size_t maxErrors);
+
     public:
         T data;
 
@@ -85,6 +89,32 @@ void Node<T>::insertDataSlice(std::list<T> &slice)
 }
 
 template<class T>
+bool Node<T>::searchBySubstitution(std::list<T> &slice, size_t maxErrors)
+{
+    auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
+    for (auto &child : this->children) {
+        // Children has the remaining slice
+        if (child.hasDataSlice(copySlice, maxErrors - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<class T>
+bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
+{
+    auto copySlice = std::list<T>(slice.begin(), slice.end());
+    for (auto &child : this->children) {
+        // Children has the remaining slice
+        if (child.hasDataSlice(copySlice, maxErrors - 1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+template<class T>
 bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
 {
     // All children founds
@@ -105,14 +135,19 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
             return false;
         }
 
-        // Substitution, browse between all children
-        slice.pop_front();
-        for (auto &child : this->children) {
-            // Children has the remaining slice
-            if (child.hasDataSlice(slice, maxErrors - 1)) {
-                return true;
-            }
+        // Character removed test
+        if (this->searchByRemovedChar(slice, maxErrors)) {
+            std::cout << "removed char" << std::endl;
+            return true;
         }
+
+        // Substitution test
+        if (this->searchBySubstitution(slice, maxErrors)) {
+            std::cout << "substitution" << std::endl;
+            return true;
+        }
+
+        // No match
         return false;
     }
 }

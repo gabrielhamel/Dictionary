@@ -26,9 +26,16 @@ int main(int ac, const char **av)
     dictionary.addWord(word2);
     dictionary.addWord(word3);
 
-    std::cout << dictionary.hasWord("Hello") << std::endl;
-    std::cout << dictionary.hasWord("Helo") << std::endl;
+    // std::cout << dictionary.hasWord("Hello") << std::endl;
+    // std::cout << dictionary.hasWord("Helo") << std::endl;
+
+
+    // Substitution
     std::cout << dictionary.hasWord("Hmllo", 1) << std::endl;
+
+    // Char removed
+    std::cout << dictionary.hasWord("Hlac", 3) << std::endl;
+
     // std::cout << dictionary.hasWord("Bonjour") << std::endl;
     // std::cout << dictionary.hasWord("Bonsoir") << std::endl;
 
