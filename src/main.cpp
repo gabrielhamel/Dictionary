@@ -27,11 +27,13 @@ int main(int ac, const char **av)
     dictionary.addWord(word3);
 
     std::cout << dictionary.hasWord("Hello") << std::endl;
-    std::cout << dictionary.hasWord("Bonjour") << std::endl;
-    std::cout << dictionary.hasWord("Bonsoir") << std::endl;
+    std::cout << dictionary.hasWord("Helo") << std::endl;
+    std::cout << dictionary.hasWord("Helo", 1) << std::endl;
+    // std::cout << dictionary.hasWord("Bonjour") << std::endl;
+    // std::cout << dictionary.hasWord("Bonsoir") << std::endl;
 
-    std::cout << dictionary.hasWord("Bonsoir test") << std::endl;
-    std::cout << dictionary.hasWord("Hell") << std::endl;
+    // std::cout << dictionary.hasWord("Bonsoir test") << std::endl;
+    // std::cout << dictionary.hasWord("Hell") << std::endl;
 
-    dictionary.tree([](wchar_t c) { return std::string(1, c); });
+    //dictionary.tree([](wchar_t c) { return std::string(1, c); });
 }

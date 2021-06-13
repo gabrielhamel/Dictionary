@@ -30,8 +30,9 @@ class Dictionary : protected Node<T> {
          * @brief Check the presence of the specified word
          *
          * @param word The word to looking for
+         * @param word The number of maximums error allowed during the search
          */
-        bool hasWord(const std::basic_string<T> &word);
+        bool hasWord(const std::basic_string<T> &word, size_t maxErrors = 0);
 
         /**
          * @brief Dump tree in terminal
@@ -58,12 +59,12 @@ void Dictionary<T>::addWord(const std::basic_string<T> &word)
 }
 
 template<class T>
-bool Dictionary<T>::hasWord(const std::basic_string<T> &word)
+bool Dictionary<T>::hasWord(const std::basic_string<T> &word, size_t maxErrors)
 {
     // Convert word to list
     std::list<T> charList(word.begin(), word.end());
 
-    return this->hasDataSlice(charList);
+    return this->hasDataSlice(charList, maxErrors);
 }
 
 template<class T>

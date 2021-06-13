@@ -32,7 +32,7 @@ class Node {
     public:
         Node(T data);
         void insertDataSlice(std::list<T> &slice);
-        bool hasDataSlice(std::list<T> &slice);
+        bool hasDataSlice(std::list<T> &slice, size_t maxErrors = 0);
 };
 
 template<class T>
@@ -85,7 +85,7 @@ void Node<T>::insertDataSlice(std::list<T> &slice)
 }
 
 template<class T>
-bool Node<T>::hasDataSlice(std::list<T> &slice)
+bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
 {
     // All children founds
     if (slice.size() == 0)
@@ -97,9 +97,21 @@ bool Node<T>::hasDataSlice(std::list<T> &slice)
 
         // Send in recursive the other part of the slice
         slice.pop_front();
-        return child.hasDataSlice(slice);
+        return child.hasDataSlice(slice, maxErrors);
     } catch (NotFound &e) {
         // Child not found, the word isn't complete
+        if (maxErrors == 0) {
+            // No errors allowed
+            return false;
+        }
+
+        // Substitution, browse between all children
+        for (auto &child : this->children) {
+            // Children has the remaining slice
+            if (child.hasDataSlice(slice, maxErrors - 1)) {
+                return true;
+            }
+        }
         return false;
     }
 }
