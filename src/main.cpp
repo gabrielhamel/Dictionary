@@ -36,6 +36,9 @@ int main(int ac, const char **av)
     // Char removed
     std::cout << dictionary.hasWord("Hlac", 3) << std::endl;
 
+    // Char addition
+    std::cout << dictionary.hasWord("Heablla", 3) << std::endl;
+
     // std::cout << dictionary.hasWord("Bonjour") << std::endl;
     // std::cout << dictionary.hasWord("Bonsoir") << std::endl;
 

@@ -29,6 +29,7 @@ class Node {
     private:
         bool searchBySubstitution(std::list<T> &slice, size_t maxErrors);
         bool searchByRemovedChar(std::list<T> &slice, size_t maxErrors);
+        bool searchByAddedChar(std::list<T> &slice, size_t maxErrors);
 
     public:
         T data;
@@ -94,7 +95,7 @@ bool Node<T>::searchBySubstitution(std::list<T> &slice, size_t maxErrors)
     auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
     for (auto &child : this->children) {
         // Children has the remaining slice
-        if (child.hasDataSlice(copySlice, maxErrors - 1)) {
+        if (child.hasDataSlice(copySlice, maxErrors)) {
             return true;
         }
     }
@@ -107,11 +108,18 @@ bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
     auto copySlice = std::list<T>(slice.begin(), slice.end());
     for (auto &child : this->children) {
         // Children has the remaining slice
-        if (child.hasDataSlice(copySlice, maxErrors - 1)) {
+        if (child.hasDataSlice(copySlice, maxErrors)) {
             return true;
         }
     }
     return false;
+}
+
+template<class T>
+bool Node<T>::searchByAddedChar(std::list<T> &slice, size_t maxErrors)
+{
+    auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
+    return this->hasDataSlice(copySlice, maxErrors);
 }
 
 template<class T>
@@ -136,12 +144,16 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
         }
 
         // Character removed test
-        if (this->searchByRemovedChar(slice, maxErrors)) {
+        if (this->searchByRemovedChar(slice, maxErrors - 1)) {
             return true;
         }
 
         // Substitution test
-        if (this->searchBySubstitution(slice, maxErrors)) {
+        if (this->searchBySubstitution(slice, maxErrors - 1)) {
+            return true;
+        }
+
+        if (this->searchByAddedChar(slice, maxErrors - 1)) {
             return true;
         }
 
