@@ -3,6 +3,7 @@
 ## Tools
 - GCC
 - CMake
+- Conan
 
 ## Build
 
