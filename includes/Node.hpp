@@ -137,13 +137,11 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
 
         // Character removed test
         if (this->searchByRemovedChar(slice, maxErrors)) {
-            std::cout << "removed char" << std::endl;
             return true;
         }
 
         // Substitution test
         if (this->searchBySubstitution(slice, maxErrors)) {
-            std::cout << "substitution" << std::endl;
             return true;
         }
 
