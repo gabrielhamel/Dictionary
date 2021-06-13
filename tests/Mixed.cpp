@@ -40,4 +40,13 @@ TEST_F(MixedError, ComplexTests) {
     // Triple substitution
     EXPECT_EQ(this->dictionary.hasWord("Babcoir", 2), false);
     EXPECT_EQ(this->dictionary.hasWord("Babcoir", 3), true);
+
+    // 2 substitution, -1 char, +2 char
+    EXPECT_EQ(this->dictionary.hasWord("ZonFFoiZ", 3), false);
+    EXPECT_EQ(this->dictionary.hasWord("ZonFFoiZ", 4), true); // +2 cancel the -1
+    EXPECT_EQ(this->dictionary.hasWord("ZonFFoiZ", 5), true);
+
+    // -3 char, 1 substitution
+    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesM", 3), false);
+    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesM", 4), true);
 }
