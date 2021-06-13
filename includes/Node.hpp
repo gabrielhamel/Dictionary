@@ -106,6 +106,7 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
         }
 
         // Substitution, browse between all children
+        slice.pop_front();
         for (auto &child : this->children) {
             // Children has the remaining slice
             if (child.hasDataSlice(slice, maxErrors - 1)) {

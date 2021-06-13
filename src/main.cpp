@@ -28,7 +28,7 @@ int main(int ac, const char **av)
 
     std::cout << dictionary.hasWord("Hello") << std::endl;
     std::cout << dictionary.hasWord("Helo") << std::endl;
-    std::cout << dictionary.hasWord("Helo", 1) << std::endl;
+    std::cout << dictionary.hasWord("Hmllo", 1) << std::endl;
     // std::cout << dictionary.hasWord("Bonjour") << std::endl;
     // std::cout << dictionary.hasWord("Bonsoir") << std::endl;
 
