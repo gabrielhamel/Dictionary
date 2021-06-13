@@ -151,23 +151,14 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
             return false;
         }
 
-        // Character removed test
-        if (this->searchByRemovedChar(slice, maxErrors - 1)) {
-            return true;
-        }
-
-        // Substitution test
-        if (this->searchBySubstitution(slice, maxErrors - 1)) {
-            return true;
-        }
-
-        // Character added test
-        if (this->searchByAddedChar(slice, maxErrors - 1)) {
-            return true;
-        }
-
-        // No match
-        return false;
+        // Error handling
+        return
+            // Character removed test
+            this->searchByRemovedChar(slice, maxErrors - 1) ||
+            // Substitution test
+            this->searchBySubstitution(slice, maxErrors - 1) ||
+            // Character added test
+            this->searchByAddedChar(slice, maxErrors - 1);
     }
 }
 
