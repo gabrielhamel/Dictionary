@@ -16,15 +16,22 @@
 int main(int ac, const char **av)
 {
 
-    Dictionary<wchar_t> dictionary;
+    Dictionary<char> dictionary;
 
     std::string word1 = "Hello";
     std::string word2 = "Bonsoir";
     std::string word3 = "Bonjour";
 
-    dictionary.addWord(std::wstring(word1.begin(), word1.end()));
-    dictionary.addWord(std::wstring(word2.begin(), word2.end()));
-    dictionary.addWord(std::wstring(word3.begin(), word3.end()));
+    dictionary.addWord(word1);
+    dictionary.addWord(word2);
+    dictionary.addWord(word3);
 
-    dictionary.tree([](char c) { return std::string(1, c); });
+    std::cout << dictionary.hasWord("Hello") << std::endl;
+    std::cout << dictionary.hasWord("Bonjour") << std::endl;
+    std::cout << dictionary.hasWord("Bonsoir") << std::endl;
+
+    std::cout << dictionary.hasWord("Bonsoir test") << std::endl;
+    std::cout << dictionary.hasWord("Hell") << std::endl;
+
+    dictionary.tree([](wchar_t c) { return std::string(1, c); });
 }

@@ -18,7 +18,26 @@ template <class T>
 class Dictionary : protected Node<T> {
     public:
         Dictionary();
+
+        /**
+         * @brief Insert a new word into the dictionary
+         *
+         * @param word The word to insert
+         */
         void addWord(const std::basic_string<T> &word);
+
+        /**
+         * @brief Check the presence of the specified word
+         *
+         * @param word The word to looking for
+         */
+        bool hasWord(const std::basic_string<T> &word);
+
+        /**
+         * @brief Dump tree in terminal
+         *
+         * @param toStringMethod
+         */
         void tree(std::function<std::string(T)> toStringMethod) const;
 };
 
@@ -36,6 +55,15 @@ void Dictionary<T>::addWord(const std::basic_string<T> &word)
 
     // Insert list into children
     this->insertDataSlice(charList);
+}
+
+template<class T>
+bool Dictionary<T>::hasWord(const std::basic_string<T> &word)
+{
+    // Convert word to list
+    std::list<T> charList(word.begin(), word.end());
+
+    return this->hasDataSlice(charList);
 }
 
 template<class T>

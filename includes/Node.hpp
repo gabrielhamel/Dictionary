@@ -32,6 +32,7 @@ class Node {
     public:
         Node(T data);
         void insertDataSlice(std::list<T> &slice);
+        bool hasDataSlice(std::list<T> &slice);
 };
 
 template<class T>
@@ -81,6 +82,26 @@ void Node<T>::insertDataSlice(std::list<T> &slice)
     // Remove first item and send remaining slice part to child
     slice.pop_front();
     child.insertDataSlice(slice);
+}
+
+template<class T>
+bool Node<T>::hasDataSlice(std::list<T> &slice)
+{
+    // All children founds
+    if (slice.size() == 0)
+        return true;
+
+    try {
+        // Try to find the first member of the slice
+        auto &child = this->findChildByData(slice.front());
+
+        // Send recursive the other part of the slice
+        slice.pop_front();
+        return child.hasDataSlice(slice);
+    } catch (NotFound &e) {
+        // Child not found, the word isn't complete
+        return false;
+    }
 }
 
 template<class T>
