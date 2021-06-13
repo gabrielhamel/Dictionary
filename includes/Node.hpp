@@ -142,8 +142,8 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
         auto &child = this->findChildByData(slice.front());
 
         // Send in recursive the other part of the slice
-        slice.pop_front();
-        return child.hasDataSlice(slice, maxErrors);
+        auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
+        return child.hasDataSlice(copySlice, maxErrors);
     } catch (NotFound &e) {
         // Child not found, the word isn't complete
         if (maxErrors == 0) {
@@ -159,14 +159,5 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
             this->searchBySubstitution(slice, maxErrors - 1) ||
             // Character added test
             this->searchByAddedChar(slice, maxErrors - 1);
-    }
-}
-
-template<class T>
-void Node<T>::dump(std::function<std::string(T)> toStringMethod, size_t deep) const
-{
-    for (auto &child : this->children) {
-        std::cout << std::string(deep, ' ') << toStringMethod(child.data) << std::endl;
-        child.dump(toStringMethod, deep + 1);
     }
 }

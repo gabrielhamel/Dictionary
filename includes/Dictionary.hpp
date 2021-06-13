@@ -33,13 +33,6 @@ class Dictionary : protected Node<T> {
          * @param word The number of maximums error allowed during the search
          */
         bool hasWord(const std::basic_string<T> &word, size_t maxErrors = 0);
-
-        /**
-         * @brief Dump tree in terminal
-         *
-         * @param toStringMethod
-         */
-        void tree(std::function<std::string(T)> toStringMethod) const;
 };
 
 template<class T>
@@ -65,10 +58,4 @@ bool Dictionary<T>::hasWord(const std::basic_string<T> &word, size_t maxErrors)
     std::list<T> charList(word.begin(), word.end());
 
     return this->hasDataSlice(charList, maxErrors);
-}
-
-template<class T>
-void Dictionary<T>::tree(std::function<std::string(T)> toStringMethod) const
-{
-    this->dump(toStringMethod);
 }
