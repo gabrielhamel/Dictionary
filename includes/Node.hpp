@@ -77,7 +77,7 @@ void Node<T>::insertDataSlice(std::list<T> &slice)
         return;
 
     // Find or create new child with the first item
-    auto &child = this->findOrInsertChild(*slice.begin());
+    auto &child = this->findOrInsertChild(slice.front());
 
     // Remove first item and send remaining slice part to child
     slice.pop_front();
@@ -95,7 +95,7 @@ bool Node<T>::hasDataSlice(std::list<T> &slice)
         // Try to find the first member of the slice
         auto &child = this->findChildByData(slice.front());
 
-        // Send recursive the other part of the slice
+        // Send in recursive the other part of the slice
         slice.pop_front();
         return child.hasDataSlice(slice);
     } catch (NotFound &e) {
