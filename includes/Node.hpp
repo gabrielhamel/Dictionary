@@ -92,7 +92,10 @@ void Node<T>::insertDataSlice(std::list<T> &slice)
 template<class T>
 bool Node<T>::searchBySubstitution(std::list<T> &slice, size_t maxErrors)
 {
+    // Ignore the substitued character
     auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
+
+    // Try to find the remaining slice part into the children
     for (auto &child : this->children) {
         // Children has the remaining slice
         if (child.hasDataSlice(copySlice, maxErrors)) {
@@ -106,6 +109,8 @@ template<class T>
 bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
 {
     auto copySlice = std::list<T>(slice.begin(), slice.end());
+
+    // Try to find the same slice into the children
     for (auto &child : this->children) {
         // Children has the remaining slice
         if (child.hasDataSlice(copySlice, maxErrors)) {
@@ -118,7 +123,10 @@ bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
 template<class T>
 bool Node<T>::searchByAddedChar(std::list<T> &slice, size_t maxErrors)
 {
+    // Ignore the wrong char
     auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
+
+    // Test himself again
     return this->hasDataSlice(copySlice, maxErrors);
 }
 
@@ -153,6 +161,7 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
             return true;
         }
 
+        // Character added test
         if (this->searchByAddedChar(slice, maxErrors - 1)) {
             return true;
         }
