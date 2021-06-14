@@ -26,8 +26,7 @@ class Node {
         Node &findOrInsertChild(T data);
 
     private:
-        bool searchBySubstitution(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
-        bool searchByRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
+        bool searchBySubstitutionOrRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
         bool searchByAddedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
 
     public:
@@ -88,25 +87,17 @@ void Node<T>::insertDataSlice(const std::list<T> &list, typename std::list<T>::i
 }
 
 template<class T>
-bool Node<T>::searchBySubstitution(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
+bool Node<T>::searchBySubstitutionOrRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
 {
     // Try to find the remaining slice part into the children
     for (auto &child : this->children) {
+        // Search by substitution
         // Ignore the substitued character
-        // Children has the remaining slice
         if (child.hasDataSlice(list, std::next(slice), maxErrors - 1)) {
             return true;
         }
-    }
-    return false;
-}
 
-template<class T>
-bool Node<T>::searchByRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
-{
-    // Try to find the same slice into the children
-    for (auto &child : this->children) {
-        // Children has the remaining slice
+        // Search if there are removed char
         if (child.hasDataSlice(list, slice, maxErrors - 1)) {
             return true;
         }
@@ -144,9 +135,8 @@ bool Node<T>::hasDataSlice(const std::list<T> &list, typename::std::list<T>::ite
         // Error handling
         return
             // Character removed test
-            this->searchByRemovedChar(list, slice, maxErrors) ||
             // Substitution test
-            this->searchBySubstitution(list, slice, maxErrors) ||
+            this->searchBySubstitutionOrRemovedChar(list, slice, maxErrors) ||
             // Character added test
             this->searchByAddedChar(list, slice, maxErrors);
     }
