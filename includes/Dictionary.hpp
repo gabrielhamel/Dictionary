@@ -58,5 +58,5 @@ bool Dictionary<T>::hasWord(const std::basic_string<T> &word, size_t maxErrors)
     // Convert word to list
     std::list<T> charList(word.begin(), word.end());
 
-    return this->hasDataSlice(charList, maxErrors);
+    return this->hasDataSlice(charList, charList.begin(), maxErrors);
 }

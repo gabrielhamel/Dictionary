@@ -26,9 +26,9 @@ class Node {
         Node &findOrInsertChild(T data);
 
     private:
-        bool searchBySubstitution(std::list<T> &slice, size_t maxErrors);
-        bool searchByRemovedChar(std::list<T> &slice, size_t maxErrors);
-        bool searchByAddedChar(std::list<T> &slice, size_t maxErrors);
+        bool searchBySubstitution(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
+        bool searchByRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
+        bool searchByAddedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
 
     public:
         T data;
@@ -36,7 +36,7 @@ class Node {
     public:
         Node(T data);
         void insertDataSlice(const std::list<T> &list, typename std::list<T>::iterator slice);
-        bool hasDataSlice(std::list<T> &slice, size_t maxErrors = 0);
+        bool hasDataSlice(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors = 0);
 };
 
 template<class T>
@@ -88,15 +88,13 @@ void Node<T>::insertDataSlice(const std::list<T> &list, typename std::list<T>::i
 }
 
 template<class T>
-bool Node<T>::searchBySubstitution(std::list<T> &slice, size_t maxErrors)
+bool Node<T>::searchBySubstitution(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
 {
-    // Ignore the substitued character
-    auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
-
     // Try to find the remaining slice part into the children
     for (auto &child : this->children) {
+        // Ignore the substitued character
         // Children has the remaining slice
-        if (child.hasDataSlice(copySlice, maxErrors)) {
+        if (child.hasDataSlice(list, std::next(slice), maxErrors - 1)) {
             return true;
         }
     }
@@ -104,14 +102,12 @@ bool Node<T>::searchBySubstitution(std::list<T> &slice, size_t maxErrors)
 }
 
 template<class T>
-bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
+bool Node<T>::searchByRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
 {
-    auto copySlice = std::list<T>(slice.begin(), slice.end());
-
     // Try to find the same slice into the children
     for (auto &child : this->children) {
         // Children has the remaining slice
-        if (child.hasDataSlice(copySlice, maxErrors)) {
+        if (child.hasDataSlice(list, slice, maxErrors - 1)) {
             return true;
         }
     }
@@ -119,29 +115,25 @@ bool Node<T>::searchByRemovedChar(std::list<T> &slice, size_t maxErrors)
 }
 
 template<class T>
-bool Node<T>::searchByAddedChar(std::list<T> &slice, size_t maxErrors)
+bool Node<T>::searchByAddedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
 {
-    // Ignore the wrong char
-    auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
-
-    // Test himself again
-    return this->hasDataSlice(copySlice, maxErrors);
+    // Ignore the wrong char and test himself again
+    return this->hasDataSlice(list, std::next(slice), maxErrors - 1);
 }
 
 template<class T>
-bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
+bool Node<T>::hasDataSlice(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
 {
     // All children founds
-    if (slice.size() == 0)
+    if (slice == list.end())
         return true;
 
     try {
         // Try to find the first member of the slice
-        auto &child = this->findChildByData(slice.front());
+        auto &child = this->findChildByData(*slice);
 
         // Send in recursive the other part of the slice
-        auto copySlice = std::list<T>(std::next(slice.begin()), slice.end());
-        return child.hasDataSlice(copySlice, maxErrors);
+        return child.hasDataSlice(list, std::next(slice), maxErrors);
     } catch (NotFound &e) {
         // Child not found, the word isn't complete
         if (maxErrors == 0) {
@@ -152,10 +144,10 @@ bool Node<T>::hasDataSlice(std::list<T> &slice, size_t maxErrors)
         // Error handling
         return
             // Character removed test
-            this->searchByRemovedChar(slice, maxErrors - 1) ||
+            this->searchByRemovedChar(list, slice, maxErrors) ||
             // Substitution test
-            this->searchBySubstitution(slice, maxErrors - 1) ||
+            this->searchBySubstitution(list, slice, maxErrors) ||
             // Character added test
-            this->searchByAddedChar(slice, maxErrors - 1);
+            this->searchByAddedChar(list, slice, maxErrors);
     }
 }
