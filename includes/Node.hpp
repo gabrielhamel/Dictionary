@@ -68,7 +68,7 @@ Node<T> &Node<T>::findOrInsertChild(T data)
         return child;
     } catch (NotFound &e) {
         // Insert child
-        this->children.push_back(Node(data));
+        this->children.push_back(Node{data});
         return this->children.back();
     }
 }
