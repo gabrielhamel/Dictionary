@@ -24,7 +24,6 @@ class Node {
     protected:
         Node &findChildByData(T data);
         Node &findOrInsertChild(T data);
-        void dump(std::function<std::string(T)> toStringMethod, size_t deep = 0) const;
 
     private:
         bool searchBySubstitution(std::list<T> &slice, size_t maxErrors);
