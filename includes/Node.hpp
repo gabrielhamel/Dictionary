@@ -35,7 +35,7 @@ class Node {
 
     public:
         Node(T data);
-        void insertDataSlice(std::list<T> &slice);
+        void insertDataSlice(const std::list<T> &list, typename std::list<T>::iterator slice);
         bool hasDataSlice(std::list<T> &slice, size_t maxErrors = 0);
 };
 
@@ -74,18 +74,17 @@ Node<T> &Node<T>::findOrInsertChild(T data)
 }
 
 template<class T>
-void Node<T>::insertDataSlice(std::list<T> &slice)
+void Node<T>::insertDataSlice(const std::list<T> &list, typename std::list<T>::iterator slice)
 {
-    // Nothing to append
-    if (slice.size() == 0)
+    // // Nothing to append
+    if (slice == list.end())
         return;
 
-    // Find or create new child with the first item
-    auto &child = this->findOrInsertChild(slice.front());
+    // // Find or create new child with the first item
+    auto &child = this->findOrInsertChild(*slice);
 
     // Remove first item and send remaining slice part to child
-    slice.pop_front();
-    child.insertDataSlice(slice);
+    child.insertDataSlice(list, std::next(slice));
 }
 
 template<class T>

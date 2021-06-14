@@ -46,9 +46,10 @@ void Dictionary<T>::addWord(const std::basic_string<T> &word)
 {
     // Convert word to list
     std::list<T> charList(word.begin(), word.end());
+    auto iterator = charList.begin();
 
     // Insert list into children
-    this->insertDataSlice(charList);
+    this->insertDataSlice(charList, iterator);
 }
 
 template<class T>
