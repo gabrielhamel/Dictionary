@@ -36,7 +36,7 @@ class Dictionary : protected Node<T> {
 };
 
 template<class T>
-Dictionary<T>::Dictionary() : Node<T>{'\0'}
+Dictionary<T>::Dictionary() : Node<T>()
 {
 
 }
