@@ -27,5 +27,6 @@ TEST_F(RemovedCharError, MultipleDeletion) {
     EXPECT_EQ(this->dictionary.hasWord("nsor", 2), false);
     EXPECT_EQ(this->dictionary.hasWord("nsor", 3), true);
 
-    EXPECT_EQ(this->dictionary.hasWord("Hl", 1), true);
+    EXPECT_EQ(this->dictionary.hasWord("Hllo", 1), true);
+    EXPECT_EQ(this->dictionary.hasWord("Hell", 1), true);
 }

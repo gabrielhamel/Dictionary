@@ -19,7 +19,7 @@ TEST_F(SearchWithoutError, BasicTest) {
 
     // Valid words
     EXPECT_EQ(this->dictionary.hasWord("Hello"), true);
-    EXPECT_EQ(this->dictionary.hasWord("Hell"), true);
+    EXPECT_EQ(this->dictionary.hasWord("Hell"), false);
 
     EXPECT_EQ(this->dictionary.hasWord("Bonjour"), true);
     EXPECT_EQ(this->dictionary.hasWord("Bonsoir"), true);
@@ -30,7 +30,7 @@ TEST_F(SearchWithoutError, BasicTest) {
 
 TEST_F(SearchWithoutError, TrickyTest) {
     // Two branching
-    EXPECT_EQ(this->dictionary.hasWord("Bon"), true);
+    EXPECT_EQ(this->dictionary.hasWord("Bon"), false);
 
     EXPECT_EQ(this->dictionary.hasWord("W"), true);
     EXPECT_EQ(this->dictionary.hasWord("Z"), false);

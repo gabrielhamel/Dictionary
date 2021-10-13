@@ -47,6 +47,6 @@ TEST_F(MixedError, ComplexTests) {
     EXPECT_EQ(this->dictionary.hasWord("ZonFFoiZ", 5), true);
 
     // -3 char, 1 substitution
-    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesM", 3), false);
-    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesM", 4), true);
+    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesMquidoloremipsumquiadolorsitametconsecteturadipiscivelit", 3), false);
+    EXPECT_EQ(this->dictionary.hasWord("NeueprroqisquamesMquidoloremipsumquiadolorsitametconsecteturadipiscivelit", 4), true);
 }
