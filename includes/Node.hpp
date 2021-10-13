@@ -26,8 +26,8 @@ class Node {
         Node &findOrInsertChild(T data);
 
     private:
-        bool searchBySubstitutionOrRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
-        bool searchByAddedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors);
+        bool searchBySubstitutionOrRemovedChar(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors);
+        bool searchByAddedChar(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors);
 
     public:
         T data;
@@ -35,8 +35,8 @@ class Node {
     public:
         Node();
         Node(T data);
-        void insertDataSlice(const std::list<T> &list, typename std::list<T>::iterator slice);
-        bool hasDataSlice(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors = 0);
+        void insertDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end);
+        bool hasDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors = 0);
 };
 
 template<class T>
@@ -80,32 +80,32 @@ Node<T> &Node<T>::findOrInsertChild(T data)
 }
 
 template<class T>
-void Node<T>::insertDataSlice(const std::list<T> &list, typename std::list<T>::iterator slice)
+void Node<T>::insertDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end)
 {
     // Nothing to append
-    if (slice == list.end())
+    if (start == end)
         return;
 
     // Find or create new child with the first item
-    auto &child = this->findOrInsertChild(*slice);
+    auto &child = this->findOrInsertChild(*start);
 
     // Remove first item and send remaining slice part to child
-    child.insertDataSlice(list, std::next(slice));
+    child.insertDataSlice(std::next(start), end);
 }
 
 template<class T>
-bool Node<T>::searchBySubstitutionOrRemovedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
+bool Node<T>::searchBySubstitutionOrRemovedChar(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors)
 {
     // Try to find the remaining slice part into the children
     for (auto &child : this->children) {
         // Search by substitution
         // Ignore the substitued character
-        if (child.hasDataSlice(list, std::next(slice), maxErrors - 1)) {
+        if (child.hasDataSlice(std::next(start), end, maxErrors - 1)) {
             return true;
         }
 
         // Search if there are removed char
-        if (child.hasDataSlice(list, slice, maxErrors - 1)) {
+        if (child.hasDataSlice(start, end, maxErrors - 1)) {
             return true;
         }
     }
@@ -113,25 +113,25 @@ bool Node<T>::searchBySubstitutionOrRemovedChar(const std::list<T> &list, typena
 }
 
 template<class T>
-bool Node<T>::searchByAddedChar(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
+bool Node<T>::searchByAddedChar(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors)
 {
     // Ignore the wrong char and test himself again
-    return this->hasDataSlice(list, std::next(slice), maxErrors - 1);
+    return this->hasDataSlice(std::next(start), end, maxErrors - 1);
 }
 
 template<class T>
-bool Node<T>::hasDataSlice(const std::list<T> &list, typename::std::list<T>::iterator slice, size_t maxErrors)
+bool Node<T>::hasDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors)
 {
     // All children founds
-    if (slice == list.end())
+    if (start == end)
         return true;
 
     try {
         // Try to find the first member of the slice
-        auto &child = this->findChildByData(*slice);
+        auto &child = this->findChildByData(*start);
 
         // Send in recursive the other part of the slice
-        return child.hasDataSlice(list, std::next(slice), maxErrors);
+        return child.hasDataSlice(std::next(start), end, maxErrors);
     } catch (NotFound &e) {
         // Child not found, the word isn't complete
         if (maxErrors == 0) {
@@ -143,8 +143,8 @@ bool Node<T>::hasDataSlice(const std::list<T> &list, typename::std::list<T>::ite
         return
             // Character removed test
             // Substitution test
-            this->searchBySubstitutionOrRemovedChar(list, slice, maxErrors) ||
+            this->searchBySubstitutionOrRemovedChar(start, end, maxErrors) ||
             // Character added test
-            this->searchByAddedChar(list, slice, maxErrors);
+            this->searchByAddedChar(start, end, maxErrors);
     }
 }

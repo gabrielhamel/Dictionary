@@ -46,10 +46,9 @@ void Dictionary<T>::addWord(const std::basic_string<T> &word)
 {
     // Convert word to list
     std::list<T> charList(word.begin(), word.end());
-    auto iterator = charList.begin();
 
     // Insert list into children
-    this->insertDataSlice(charList, iterator);
+    this->insertDataSlice(charList.begin(), charList.end());
 }
 
 template<class T>
@@ -58,5 +57,5 @@ bool Dictionary<T>::hasWord(const std::basic_string<T> &word, size_t maxErrors)
     // Convert word to list
     std::list<T> charList(word.begin(), word.end());
 
-    return this->hasDataSlice(charList, charList.begin(), maxErrors);
+    return this->hasDataSlice(charList.begin(), charList.end(), maxErrors);
 }
