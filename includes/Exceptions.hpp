@@ -1,7 +1,7 @@
 /**
  * @file Exceptions.hpp
  * @author Gabriel Hamel (gabriel.hamel.pro@gmail.com)
- * @brief
+ * @brief Exception for Node class
  * @version 1.0
  * @date 2021-06-12
  *

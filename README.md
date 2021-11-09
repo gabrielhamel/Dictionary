@@ -1,7 +1,7 @@
 # Dictionary
 
 ## Tools
-- GCC
+- C++17 compiler (GCC, MinGW, Visual Studio, ...)
 - CMake
 - Conan
 

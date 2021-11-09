@@ -1,7 +1,7 @@
 /**
  * @file Dictionary.hpp
  * @author Gabriel Hamel (gabriel.hamel.pro@gmail.com)
- * @brief
+ * @brief The main dictionary instance
  * @version 1.0
  * @date 2021-06-12
  *

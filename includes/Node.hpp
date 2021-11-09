@@ -1,7 +1,7 @@
 /**
  * @file Node.hpp
  * @author Gabriel Hamel (gabriel.hamel.pro@gmail.com)
- * @brief
+ * @brief The dictionary engine, it is a tree node
  * @version 1.0
  * @date 2021-06-12
  *
@@ -54,9 +54,11 @@ data(data), isWordEnd(isWordEnd)
 template<class T>
 Node<T> &Node<T>::findChildByData(T data)
 {
-    for (auto &child : this->children)
-        if (child.data == data)
+    for (auto &child : this->children) {
+        if (child.data == data) {
             return child;
+        }
+    }
     throw NotFound();
 }
 
@@ -81,8 +83,9 @@ template<class T>
 void Node<T>::insertDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end)
 {
     // Nothing to append
-    if (start == end)
+    if (start == end) {
         return;
+    }
 
     // Find or create new child with the first item
     auto &child = this->findOrInsertChild(*start, std::next(start) == end);
@@ -98,12 +101,14 @@ bool Node<T>::searchBySubstitutionOrRemovedChar(typename::std::list<T>::iterator
     for (auto &child : this->children) {
         // Search by substitution
         // Ignore the substitued character
-        if (child.hasDataSlice(std::next(start), end, maxErrors - 1))
+        if (child.hasDataSlice(std::next(start), end, maxErrors - 1)) {
             return true;
+        }
 
         // Search if there are removed char
-        if (child.hasDataSlice(start, end, maxErrors - 1))
+        if (child.hasDataSlice(start, end, maxErrors - 1)) {
             return true;
+        }
     }
     return false;
 }
@@ -119,8 +124,9 @@ template<class T>
 bool Node<T>::hasDataSlice(typename::std::list<T>::iterator start, typename::std::list<T>::iterator end, size_t maxErrors)
 {
     // All children founds
-    if (start == end && this->isWordEnd)
+    if (start == end && this->isWordEnd) {
         return true;
+    }
 
     try {
         // Try to find the first member of the slice
@@ -130,9 +136,10 @@ bool Node<T>::hasDataSlice(typename::std::list<T>::iterator start, typename::std
         return child.hasDataSlice(std::next(start), end, maxErrors);
     } catch (const NotFound &e) {
         // Child not found, the word isn't complete
-        if (maxErrors == 0)
+        if (maxErrors == 0) {
             // No errors allowed
             return false;
+        }
 
         // Error handling
         return
