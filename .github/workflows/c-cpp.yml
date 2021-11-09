@@ -14,11 +14,9 @@ jobs:
     steps:
     - name: Get Conan
       uses: turtlebrowser/get-conan@v1.0
-    - name: Create the build folder
-      run: mkdir build
     - name: Run packages installation
-      run: conan install .. --build=missing -s compiler.libcxx=libstdc++11
+      run: conan install . --build=missing -s compiler.libcxx=libstdc++11
     - name: Generate CMake files
-      run: cd build && cmake ..
+      run: cmake ..
     - name: Build project
-      run: cd build && cmake --build .
+      run: cmake --build .
