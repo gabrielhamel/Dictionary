@@ -36,4 +36,4 @@ jobs:
     
     - name: Launch units tests
       working-directory: ${{github.workspace}}/build
-      run: ls
+      run: ./bin/unit-tests
