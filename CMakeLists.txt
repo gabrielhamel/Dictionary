@@ -33,3 +33,6 @@ target_include_directories(unit-tests PUBLIC
 
 target_link_libraries(unit-tests PRIVATE ${CONAN_LIBS})
 target_link_libraries(unit-tests PRIVATE ${CMAKE_DL_LIBS})
+
+ENABLE_TESTING()
+ADD_TEST(tests bin/unit-tests)
